@@ -32,3 +32,4 @@ var y = 50;
     }
 
 window.addEventListener('load', init, false);
+window.requestAnimationFrame = (function () { return window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (callback) { window.setTimeout(callback, 17); }; }());

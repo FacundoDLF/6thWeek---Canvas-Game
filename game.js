@@ -5,10 +5,10 @@ ctx = null;
 var x = 50;
 var y = 50;
 var lastPress = null;
-var KEY_LEFT = 37 , a,
-    KEY_UP = 38 , w,
-    KEY_RIGHT = 39 , d,
-    KEY_DOWN = 40 , s ;
+var KEY_LEFT = 37 ,
+    KEY_UP = 38 ,
+    KEY_RIGHT = 39 ,
+    KEY_DOWN = 40;
 var dir = 0;
 
 //Canvas Background
@@ -29,21 +29,65 @@ var dir = 0;
     function act(){
         x += 0.5;
         if (x > canvas.width){
-            x =0;
+            x = 0;
+        }
+// Direction
+    // Key Press
+
+        if (lastPress == KEY_UP) {
+            dir = 0;
+        }
+        if (lastPress == KEY_RIGHT) {
+        dir = 1;
+        }
+        if (lastPress == KEY_DOWN) {
+        dir = 2;
+        }
+        if (lastPress == KEY_LEFT) {
+        dir = 3;
+        }
+
+// Move
+
+        if (dir == 0) {
+        y -= 10;
+        }
+        if (dir == 1) {
+        x += 10;
+        }
+        if (dir == 2) {
+        y += 10;
+        }
+        if (dir == 3) {
+        x -= 10;
+        }
+
+// Screen Out
+
+        if (x > canvas.width) {
+        x = 0;
+        }
+        if (y > canvas.height) {
+        y = 0;
+        }
+        if (x < 0) {
+        x = canvas.width;
+        }
+        if (y < 0) {
+        y = canvas.height;
         }
     }
 
     function run() {
         window.requestAnimationFrame(run);
         act();
-        setTimeout(run, 50)
+        setTimeout(run, 5000)
         }
 
     function repaint() {
         window.requestAnimationFrame(repaint);
         paint(ctx);
     }
-
 
 
     function init() {

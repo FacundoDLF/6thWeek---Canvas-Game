@@ -12,6 +12,9 @@ var y = 50;
         ctx.fillRect(x, y, 10, 10);
 
     }
+    function act(){
+        x += 0.5;
+        }
 
     function run() {
         window.requestAnimationFrame(run);

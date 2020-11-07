@@ -12,7 +12,7 @@ var lastPress = null;
     function paint(ctx) {
         ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, 300, 150);
-        
+        ctx.fillText('lastPress: ' + lastPress, 0, 20);
         // ctx.fillRect(0, 0, 300, 150);
 
         ctx.fillStyle = '#0f0';

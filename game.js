@@ -9,7 +9,7 @@ var KEY_LEFT = 37 , a,
     KEY_UP = 38 , w,
     KEY_RIGHT = 39 , d,
     KEY_DOWN = 40 , s ;
-
+var dir = 0;
 
 //Canvas Background
 
@@ -36,13 +36,21 @@ var KEY_LEFT = 37 , a,
     function run() {
         window.requestAnimationFrame(run);
         act();
-        paint(ctx);
+        setTimeout(run, 50)
         }
+
+    function repaint() {
+        window.requestAnimationFrame(repaint);
+        paint(ctx);
+    }
+
+
 
     function init() {
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
         run(ctx);
+        repaint();
     }
 
     document.addEventListener('keydown', function(evt) {

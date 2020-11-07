@@ -5,7 +5,7 @@ var y = 50;
 
     function paint(ctx) {
         ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, 100, 60);
+        ctx.fillRect(0, 0, 300, 150);
         // ctx.fillRect(0, 0, 300, 150);
 
         ctx.fillStyle = '#0f0';
@@ -14,7 +14,10 @@ var y = 50;
     }
     function act(){
         x += 0.5;
+        if (x > canvas.width){
+            x =0;
         }
+    }
 
     function run() {
         window.requestAnimationFrame(run);

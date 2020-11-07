@@ -5,32 +5,50 @@ ctx = null;
 var x = 50;
 var y = 50;
 var lastPress = null;
-var KEY_LEFT = 37 ,
-    KEY_UP = 38 ,
-    KEY_RIGHT = 39 ,
-    KEY_DOWN = 40;
+var KEY_LEFT = 37;
+var KEY_UP = 38;
+var KEY_RIGHT = 39;
+var KEY_DOWN = 40;
+var KEY_ENTER = 13;
 var dir = 0;
+var pause = true;
+
+
+document.addEventListener('keydown', function (evt) {
+    lastPress = evt.which;
+    }, false);
 
 //Canvas Background
 
     function paint(ctx) {
+        // Clean Canvas
         ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, 300, 150);
-        ctx.fillText('lastPress: ' + lastPress, 0, 20);
-        // ctx.fillRect(0, 0, 300, 150);
 
+        //Draw background
         ctx.fillStyle = '#0f0';
         ctx.fillRect(x, y, 10, 10);
 
-    }
+        //Debug Last Ker Pressed
+        ctx.fillText('lastPress: ' + lastPress, 0, 20);
+            // ctx.fillRect(0, 0, 300, 150);
 
-    //Movement
-
-    function act(){
-        x += 0.5;
-        if (x > canvas.width){
-            x = 0;
+        // pause Text
+        if (pause) {
+            ctx.textAlign = 'center';
+            ctx.fillText('PAUSE', 150, 75);
+            ctx.textAlign = 'left';
         }
+
+    }
+    //Movement
+function act(){
+        // x += 2;
+        //  if (x > canvas.width){
+        //      x = 0;
+        // }
+    if (!pause) {
+
 // Direction
     // Key Press
 
@@ -78,31 +96,39 @@ var dir = 0;
         }
     }
 
-    function run() {
-        window.requestAnimationFrame(run);
-        act();
-        setTimeout(run, 5000)
-        }
-
-    function repaint() {
-        window.requestAnimationFrame(repaint);
-        paint(ctx);
+    // Pause/Unpause
+    if (lastPress == KEY_ENTER) {
+        pause = !pause;
+        lastPress = null;
     }
+}
 
+function repaint() {
+    window.requestAnimationFrame(repaint);
+    paint(ctx);
+}
 
-    function init() {
-        canvas = document.getElementById('canvas');
-        ctx = canvas.getContext('2d');
-        run(ctx);
-        repaint();
-    }
+function run() {
+    // window.requestAnimationFrame(run);
+    setTimeout(run, 50)
+    act();
+}
 
-    document.addEventListener('keydown', function(evt) {
-        lastPress = evt.which;
-    }, false);
+function init() {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
 
-
-// Window functions
+    run();
+    repaint();
+}
 
 window.addEventListener('load', init, false);
-window.requestAnimationFrame = (function () { return window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (callback) { window.setTimeout(callback, 17); }; }());
+
+// Window functions
+window.requestAnimationFrame = (function () { 
+    return window.requestAnimationFrame || 
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || 
+        function (callback) { 
+            window.setTimeout(callback, 17);
+        }; }());

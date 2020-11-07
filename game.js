@@ -5,6 +5,10 @@ ctx = null;
 var x = 50;
 var y = 50;
 var lastPress = null;
+var KEY_LEFT = 37 , a,
+    KEY_UP = 38 , w,
+    KEY_RIGHT = 39 , d,
+    KEY_DOWN = 40 , s ;
 
 
 //Canvas Background

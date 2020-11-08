@@ -1,17 +1,21 @@
 // Variables
 
 var canvas = null,
-ctx = null;
-var x = 120;
-var y = 66;
-var lastPress = null;
+    ctx = null;
+    x = 120;
+    y = 66;
+    lastPress = null;
+
 var KEY_LEFT = 37;
 var KEY_UP = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
 var KEY_ENTER = 13;
-var dir = 0;
-var pause = true;
+
+    dir = 0;
+    pause = true;
+    player = null;
+    score = 0;
 
 
 document.addEventListener('keydown', function (evt) {
@@ -27,10 +31,14 @@ document.addEventListener('keydown', function (evt) {
 
         //Draw background
         ctx.fillStyle = 'rgb(78, 31, 31)';
-        ctx.fillRect(x, y, 10, 10);
+        ctx.fillRect(x, y, 20, 20);
 
         //Debug Last Ker Pressed
         console.log(' LastPress: ' + lastPress);
+
+        // Score
+        ctx.fillText('Score: ' + score, 10, 20);
+        ctx.font = "20px New Rocker";
 
         // pause Text
         if (pause) {
@@ -40,7 +48,8 @@ document.addEventListener('keydown', function (evt) {
         }
 
     }
-    //Movement
+
+//Movement
 function act(){
         // x += 2;
         //  if (x > canvas.width){
@@ -100,6 +109,13 @@ function act(){
         pause = !pause;
         lastPress = null;
     }
+
+    // Intersection with Food
+    if (player.intersects(food)) {
+        score += 1;
+        food.x = random(canvas.width / 10 - 1) * 10;
+        food.y = random(canvas.height / 10 - 1) * 10;
+        }
 }
 
 function repaint() {
@@ -116,6 +132,12 @@ function run() {
 function init() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+
+    // Add New Player
+    player = new Rectangle(40, 40, 10, 10);
+
+    //Add Food
+    food = new Rectangle(80, 80, 10, 10);
 
     run();
     repaint();
@@ -156,4 +178,10 @@ function Rectangle(x, y, width, height) {
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
     };
+}
+
+// Add Score
+
+function random(max) {
+    return Math.floor(Math.random() * max);
 }

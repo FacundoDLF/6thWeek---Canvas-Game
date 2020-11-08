@@ -2,8 +2,8 @@
 
 var canvas = null,
 ctx = null;
-var x = 50;
-var y = 50;
+var x = 120;
+var y = 66;
 var lastPress = null;
 var KEY_LEFT = 37;
 var KEY_UP = 38;
@@ -16,27 +16,26 @@ var pause = true;
 
 document.addEventListener('keydown', function (evt) {
     lastPress = evt.which;
-    }, false);
+}, false);
 
 //Canvas Background
 
     function paint(ctx) {
         // Clean Canvas
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, 300, 150);
+        ctx.fillStyle = 'rgb(252, 231, 165)';
+        ctx.fillRect(0, 0, 1200, 500);
 
         //Draw background
-        ctx.fillStyle = '#0f0';
+        ctx.fillStyle = 'rgb(78, 31, 31)';
         ctx.fillRect(x, y, 10, 10);
 
         //Debug Last Ker Pressed
-        ctx.fillText('lastPress: ' + lastPress, 0, 20);
-            // ctx.fillRect(0, 0, 300, 150);
+        console.log(' LastPress: ' + lastPress);
 
         // pause Text
         if (pause) {
             ctx.textAlign = 'center';
-            ctx.fillText('PAUSE', 150, 75);
+            ctx.fillText('PAUSE', 600, 250);
             ctx.textAlign = 'left';
         }
 
@@ -125,10 +124,36 @@ function init() {
 window.addEventListener('load', init, false);
 
 // Window functions
-window.requestAnimationFrame = (function () { 
-    return window.requestAnimationFrame || 
+window.requestAnimationFrame = (function () {
+    return window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame || 
-        function (callback) { 
+        window.webkitRequestAnimationFrame ||
+        function (callback) {
             window.setTimeout(callback, 17);
         }; }());
+
+// Interaction
+
+function Rectangle(x, y, width, height) {
+    this.x = (x == null) ? 0 : x;
+    this.y = (y == null) ? 0 : y;
+    this.width = (width == null) ? 0 : width;
+    this.height = (height == null) ? this.width : height;
+    this.intersects = function (rect) {
+        if (rect == null) {
+        window.console.warn('Missing parameters on function intersects');
+        } else {
+            return (this.x < rect.x + rect.width &&
+                this.x + this.width > rect.x &&
+                this.y < rect.y + rect.height &&
+                this.y + this.height > rect.y);
+        }
+    };
+    this.fill = function (ctx) {
+        if (ctx == null) {
+            window.console.warn('Missing parameters on function fill');
+        } else {
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    };
+}

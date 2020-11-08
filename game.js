@@ -62,7 +62,7 @@ function random(max) {
         ctx.fillRect(0, 0, 1200, 500);
 
         // Player
-        ctx.fillStyle = 'rgb(78, 31, 31)';
+        ctx.fillStyle = 'rgb(192, 25, 25';
         player.fill(ctx);
 
         // Food
@@ -73,8 +73,8 @@ function random(max) {
         console.log(' LastPress: ' + lastPress);
 
         // Score
-        ctx.fillText('Score: ' + score, 10, 20);
-        ctx.font = "20px New Rocker";
+        ctx.fillText('Score: ' + score, 10, 30);
+        ctx.font = "30px New Rocker";
 
         // Pause
         if (pause) {
@@ -149,8 +149,8 @@ function act(){
     // Intersection & Food
     if (player.intersects(food)) {
         score += 1*100;
-        food.x = random(canvas.width / 20 - 1) * 20;
-        food.y = random(canvas.height / 20 - 1) * 20;
+        food.x = random(canvas.width / 10 - 1) * 10;
+        food.y = random(canvas.height / 10 - 1) * 10;
         }
 }
 
@@ -170,10 +170,10 @@ function init() {
     ctx = canvas.getContext('2d');
 
     // Add New Player
-    player = new Rectangle(545, 285, 15, 15);
+    player = new Rectangle(515, 275, 30, 30);
 
     // //Add Food
-    food = new Rectangle(80, 80, 20, 20);
+    food = new Rectangle(80, 80, 10, 10);
 
     run();
     repaint();

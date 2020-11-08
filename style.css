@@ -1,0 +1,14 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.title-h1 {
+    font-size: 1.8rem;
+    font-family: 'New Rocker';
+    color: rgb(78, 31, 31);
+    text-transform: capitalize;
+    text-shadow: 3px 1px rgb(219, 181, 111);
+}

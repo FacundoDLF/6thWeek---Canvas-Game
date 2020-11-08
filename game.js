@@ -17,6 +17,7 @@ var pause = true;
 var player = null;
 var food = null;
 var score = 0;
+var wall = new Array();
 
 
 document.addEventListener('keydown', function (evt) {
@@ -68,6 +69,13 @@ function random(max) {
         // Food
         ctx.fillStyle = 'rgb(0, 0, 18)';
         food.fill(ctx)
+
+        // Enemies
+        ctx.fillStyle = 'rgb(0 , 0, 125)'
+        for ( i = 0, l = wall.length; i < l ; i += 1) {
+            wall[i].fill[ctx];
+
+        }
 
         //Debug Last Ker Pressed
         console.log(' LastPress: ' + lastPress);
@@ -172,8 +180,15 @@ function init() {
     // Add New Player
     player = new Rectangle(515, 275, 30, 30);
 
-    // //Add Food
+    // Add Food
     food = new Rectangle(80, 80, 10, 10);
+
+    // Add Enemies
+
+    wall.push(new Rectangle(400, 100, 30, 30));
+    wall.push(new Rectangle(400, 200, 30, 30));
+    wall.push(new Rectangle(800, 100, 30, 30));
+    wall.push(new Rectangle(800, 200, 30, 30));
 
     run();
     repaint();

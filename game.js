@@ -18,6 +18,7 @@ var player = null;
 var food = null;
 var score = 0;
 var wall = new Array();
+var gameOver = true;
 
 
 document.addEventListener('keydown', function (evt) {
@@ -54,10 +55,27 @@ function Rectangle(x, y, width, height) {
 function random(max) {
     return Math.floor(Math.random() * max);
 }
+// Reset
+
+function reset() {
+    score = 0;
+    dir = 1;
+    player.x = 590;
+    player.y = 305;
+    food.x = random(canvas.width / 10 - 1) * 10;
+    food.y = random(canvas.height / 10 - 1) * 10;
+    gameOver = false;
+/* QUESTION: Why I can't define reset() as:
+    function reset(
+        init({..})
+    )*/
+};
 
 //Canvas
 
     function paint(ctx) {
+        var i = 0;
+        var l = 0;
         // Clean Canvas
         ctx.fillStyle = 'rgb(252, 231, 165, 0.79)';
         ctx.fillRect(0, 0, 1200, 500);
@@ -68,14 +86,13 @@ function random(max) {
 
         // Food
         ctx.fillStyle = 'rgb(0, 0, 18)';
-        food.fill(ctx)
+        food.fill(ctx);
 
         // Enemies
-        ctx.fillStyle = 'rgb(0 , 0, 125)'
+        ctx.fillStyle = 'rgb(0 , 0, 125)';
         for ( i = 0, l = wall.length; i < l ; i += 1) {
-            wall[i].fill[ctx];
-
-        }
+            wall[i].fill(ctx);
+        };
 
         //Debug Last Ker Pressed
         console.log(' LastPress: ' + lastPress);
@@ -84,12 +101,17 @@ function random(max) {
         ctx.fillText('Score: ' + score, 10, 30);
         ctx.font = "30px New Rocker";
 
-        // Pause
+        // Pause  & Game Over
         if (pause) {
             ctx.textAlign = 'center';
-            ctx.fillText('PAUSE', 600, 300);
-            ctx.textAlign = 'left';
-        }
+            if (gameOver) {
+                ctx.fillText('GAME OVER', 600, 300)
+            } else {
+                ctx.fillText('PAUSE', 600, 300)
+                }
+                ctx.textAlign = 'left';
+            };
+
 
     }
 
@@ -99,7 +121,14 @@ function act(){
         //  if (x > canvas.width){
         //      x = 0;
         // }
+    var i;
+    var l;
+
     if (!pause) {
+// GameOver Reset
+        if (gameOver) {
+            reset();
+        }
 
 // Direction
     // Key Press
@@ -154,12 +183,26 @@ function act(){
         lastPress = null;
     }
 
-    // Intersection & Food
+
+    // Intersections & Food
     if (player.intersects(food)) {
         score += 1*100;
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;
         }
+
+    // Intersections & Enemies
+    for (i = 0, l = wall.length; i < l; i += 1) {
+        if (food.intersects(wall[i])) {
+        food.x = random(canvas.width / 10 - 1) * 10;
+        food.y = random(canvas.height / 10 - 1) * 10;
+        }
+
+        if (player.intersects(wall[i])) {
+        gameOver = true;
+        pause = true;
+        }
+    }
 }
 
 function repaint() {
@@ -178,7 +221,7 @@ function init() {
     ctx = canvas.getContext('2d');
 
     // Add New Player
-    player = new Rectangle(515, 275, 30, 30);
+    player = new Rectangle(590, 305, 30, 30);
 
     // Add Food
     food = new Rectangle(80, 80, 10, 10);

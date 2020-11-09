@@ -14,7 +14,8 @@ var KEY_ENTER = 13;
 
 var dir = 0;
 var pause = true;
-var player = null;
+// var player = null;
+var body = new Array();
 var food = null;
 var score = 0;
 var wall = new Array();

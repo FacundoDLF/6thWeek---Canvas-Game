@@ -198,6 +198,9 @@ function act(){
 
     // Intersections & Food
     if (body[0].intersects(food)) {
+        // Grow Up
+        body.push(new Rectangle(food.x, food.y, 10, 10));
+        //
         score += 1*100;
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;

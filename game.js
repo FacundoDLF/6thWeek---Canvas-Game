@@ -20,6 +20,8 @@ var food = null;
 var score = 0;
 var wall = new Array();
 var gameOver = true;
+var iBody = new Image();
+var iFood = new Image();
 
 
 document.addEventListener('keydown', function (evt) {
@@ -88,14 +90,16 @@ function paint(ctx) {
     ctx.fillRect(0, 0, 1200, 500);
 
     // body[0]
-    ctx.fillStyle = 'rgb(192, 25, 25';
+    // ctx.fillStyle = 'rgb(192, 25, 25';
     for (i = 0, l = body.length; i < l; i += 1) {
-        body[i].fill(ctx);
+        // body[i].fill(ctx);
+        ctx.drawImage(iBody, body[i].x, body[i].y);
     }
 
     // Food
-    ctx.fillStyle = 'rgb(0, 0, 18)';
-    food.fill(ctx);
+    // ctx.fillStyle = 'rgb(0, 0, 18)';
+    // food.fill(ctx);
+    ctx.drawImage(iFood, food.x, food.y);
 
     // Enemies
     ctx.fillStyle = 'rgb(0 , 0, 125)';
@@ -199,7 +203,7 @@ function act() {
         lastPress = null;
     }
 
-    // Intersections & Food
+    // Intersections & Food (EAT)
     // Grow Up
     if (body[0].intersects(food)) {
         body.push(new Rectangle(body.x, body.y, 25, 25));
@@ -208,7 +212,7 @@ function act() {
         food.y = random(canvas.height / 10 - 1) * 10;
     }
 
-    // Intersections & Enemies
+    // Intersections & Enemies(DIE)
     for (i = 0, l = wall.length; i < l; i += 1) {
         if (food.intersects(wall[i])) {
             food.x = random(canvas.width / 10 - 1) * 10;
@@ -248,8 +252,14 @@ function init() {
     // Add New player
     body[0] = new Rectangle(590, 305, 30, 30);
 
+
     // Add Food
     food = new Rectangle(80, 80, 30, 30);
+
+    // Load assets
+    iBody.src = './assets/body.png';
+    iFood.src = './assets/food.png';
+
 
     // Add Enemies
 

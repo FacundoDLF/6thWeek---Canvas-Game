@@ -34,7 +34,7 @@ function Rectangle(x, y, width, height) {
     this.height = (height == null) ? this.width : height;
     this.intersects = function (rect) {
         if (rect == null) {
-        window.console.warn('Missing parameters on function intersects');
+            window.console.warn('Missing parameters on function intersects');
         } else {
             return (this.x < rect.x + rect.width &&
                 this.x + this.width > rect.x &&
@@ -56,6 +56,8 @@ function Rectangle(x, y, width, height) {
 function random(max) {
     return Math.floor(Math.random() * max);
 }
+
+
 // Reset
 
 function reset() {
@@ -70,122 +72,124 @@ function reset() {
     food.x = random(canvas.width / 10 - 1) * 10;
     food.y = random(canvas.height / 10 - 1) * 10;
     gameOver = false;
-/* QUESTION: Why I can't define reset() as:
-    function reset(
-        init({..})
-    )*/
+    /* QUESTION: Why I can't define reset() as:
+        function reset(
+            init({..})
+        )*/
 };
 
 //Canvas
 
-    function paint(ctx) {
-        var i = 0;
-        var l = 0;
-        // Clean Canvas
-        ctx.fillStyle = 'rgb(252, 231, 165, 0.79)';
-        ctx.fillRect(0, 0, 1200, 500);
+function paint(ctx) {
+    var i = 0;
+    var l = 0;
+    // Clean Canvas
+    ctx.fillStyle = 'rgb(252, 231, 165, 0.79)';
+    ctx.fillRect(0, 0, 1200, 500);
 
-        // body[0]
-        ctx.fillStyle = 'rgb(192, 25, 25';
-        for (i = 0, l = body.length; i < l; i += 1) {
-            body[i].fill(ctx);
-        }
-
-        // Food
-        ctx.fillStyle = 'rgb(0, 0, 18)';
-        food.fill(ctx);
-
-        // Enemies
-        ctx.fillStyle = 'rgb(0 , 0, 125)';
-        for ( i = 0, l = wall.length; i < l ; i += 1) {
-            wall[i].fill(ctx);
-        };
-
-        //Debug Last Ker Pressed
-        console.log(' LastPress: ' + lastPress);
-
-        // Score
-        ctx.fillText('Score: ' + score, 10, 30);
-        ctx.font = "30px New Rocker";
-
-        // Pause  & Game Over
-        if (pause) {
-            ctx.textAlign = 'center';
-            if (gameOver) {
-                ctx.fillText('GAME OVER', 600, 300)
-            } else {
-                ctx.fillText('PAUSE', 600, 300)
-                }
-                ctx.textAlign = 'left';
-            };
-
-
+    // body[0]
+    ctx.fillStyle = 'rgb(192, 25, 25';
+    for (i = 0, l = body.length; i < l; i += 1) {
+        body[i].fill(ctx);
     }
 
+    // Food
+    ctx.fillStyle = 'rgb(0, 0, 18)';
+    food.fill(ctx);
+
+    // Enemies
+    ctx.fillStyle = 'rgb(0 , 0, 125)';
+    for (i = 0, l = wall.length; i < l; i += 1) {
+        wall[i].fill(ctx);
+    };
+
+    //Debug Last Ker Pressed
+    console.log(' LastPress: ' + lastPress);
+
+    // Score
+    ctx.fillText('Score: ' + score, 10, 30);
+    ctx.font = "30px New Rocker";
+
+    // Pause  & Game Over
+    if (pause) {
+        ctx.textAlign = 'center';
+        if (gameOver) {
+            ctx.fillText('GAME OVER', 600, 300)
+        } else {
+            ctx.fillText('PAUSE', 600, 300)
+        }
+        ctx.textAlign = 'left';
+    };
+
+
+}
+
 //Movement
-function act(){
-        // x += 2;
-        //  if (x > canvas.width){
-        //      x = 0;
-        // }
+function act() {
+    // x += 2;
+    //  if (x > canvas.width){
+    //      x = 0;
+    // }
     var i;
     var l;
 
     if (!pause) {
-// GameOver Reset
+        // GameOver Reset
         if (gameOver) {
             reset();
         }
 
-// Direction
-    // Key Press
+        // Move Body
+
+        for (i = body.length - 1; i > 0; i -= 1) {
+            body[i].x = body[i - 1].x;
+            body[i].y = body[i - 1].y;
+        }
+
+        // Direction
+        // Key Press
 
         if (lastPress == KEY_UP) {
             dir = 0;
         }
         if (lastPress == KEY_RIGHT) {
-        dir = 1;
+            dir = 1;
         }
         if (lastPress == KEY_DOWN) {
-        dir = 2;
+            dir = 2;
         }
         if (lastPress == KEY_LEFT) {
-        dir = 3;
+            dir = 3;
         }
 
-// Move
-    // Move Body
+        // Move Head
 
-    for (i = body.length - 1; i > 0; i -= 1) {
-        body[i].x = body[i - 1].x;
-        body[i].y = body[i - 1].y;
-        }
         if (dir == 0) {
-        body[0].y -= 10;
+            body[0].y -= 30;
         }
         if (dir == 1) {
-        body[0].x += 10;
+            body[0].x += 30;
         }
         if (dir == 2) {
-        body[0].y += 10;
+            body[0].y += 30;
         }
         if (dir == 3) {
-        body[0].x -= 10;
+            body[0].x -= 30;
         }
 
-// Screen Out
+        // Screen Out
 
         if (body[0].x > canvas.width) {
-        body[0].x = 0;
+            body[0].x = 0;
         }
         if (body[0].y > canvas.height) {
-        body[0].y = 0;
+            body[0].y = 0;
         }
         if (body[0].x < 0) {
-        body[0].x = canvas.width;
+            body[0].x = canvas.width;
         }
         if (body[0].y < 0) {
-        body[0].y = canvas.height;
+            body[0].y = canvas.height;
         }
     }
 
@@ -195,36 +199,33 @@ function act(){
         lastPress = null;
     }
 
-
     // Intersections & Food
+    // Grow Up
     if (body[0].intersects(food)) {
-        // Grow Up
-        body.push(new Rectangle(food.x, food.y, 20, 20))
-        //
-        score += 1*100;
+        body.push(new Rectangle(body.x, body.y, 20, 20));
+        score += 1 * 100;
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;
-        }
+    }
 
     // Intersections & Enemies
     for (i = 0, l = wall.length; i < l; i += 1) {
         if (food.intersects(wall[i])) {
-        food.x = random(canvas.width / 10 - 1) * 10;
-        food.y = random(canvas.height / 10 - 1) * 10;
+            food.x = random(canvas.width / 10 - 1) * 10;
+            food.y = random(canvas.height / 10 - 1) * 10;
         }
 
         if (body[0].intersects(wall[i])) {
-        gameOver = true;
-        pause = true;
+            gameOver = true;
+            pause = true;
         }
     }
 
     // Body Intersects
     for (i = 2, l = body.length; i < l; i += 1) {
-
         if (body[0].intersects(body[i])) {
-        gameOver = true;
-        pause = true;
+            gameOver = true;
+            pause = true;
         }
     }
 }
@@ -236,7 +237,7 @@ function repaint() {
 
 function run() {
     // window.requestAnimationFrame(run);
-    setTimeout(run, 25)
+    setTimeout(run, 60)
     act();
 }
 
@@ -244,11 +245,11 @@ function init() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
 
-    // Add New body[0]
-    body[0] = new Rectangle(590, 305, 20, 20);
+    // Add New player
+    body[0] = new Rectangle(590, 305, 30, 30);
 
     // Add Food
-    food = new Rectangle(80, 80, 10, 10);
+    food = new Rectangle(80, 80, 30, 30);
 
     // Add Enemies
 
@@ -271,5 +272,5 @@ window.requestAnimationFrame = (function () {
         window.webkitRequestAnimationFrame ||
         function (callback) {
             window.setTimeout(callback, 17);
-        }; }());
-
+        };
+}());

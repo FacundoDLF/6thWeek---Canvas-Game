@@ -220,12 +220,15 @@ function act() {
         if (food.intersects(wall[i])) {
             food.x = random(canvas.width / 10 - 1) * 10;
             food.y = random(canvas.height / 10 - 1) * 10;
-            aDie.play();
+
         }
 
         if (body[0].intersects(wall[i])) {
             gameOver = true;
             pause = true;
+            aDie.play();
+            reset();
+
         }
     }
 
@@ -234,6 +237,8 @@ function act() {
         if (body[0].intersects(body[i])) {
             gameOver = true;
             pause = true;
+            aDie.play();
+            reset();
         }
     }
 }

@@ -65,8 +65,8 @@ function reset() {
     dir = 0;
     body.length = 0;
     body.push(new Rectangle(590, 305, 30, 30));
-    body.push(new Rectangle(0, 0, 20, 20));
-    body.push(new Rectangle(0, 0, 20, 20));
+    body.push(new Rectangle(0, 0, 25, 25));
+    body.push(new Rectangle(0, 0, 25, 25));
     // body[0].x = 590;
     // body[0].y = 305;
     food.x = random(canvas.width / 10 - 1) * 10;
@@ -202,7 +202,7 @@ function act() {
     // Intersections & Food
     // Grow Up
     if (body[0].intersects(food)) {
-        body.push(new Rectangle(body.x, body.y, 20, 20));
+        body.push(new Rectangle(body.x, body.y, 25, 25));
         score += 1 * 100;
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;

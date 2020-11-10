@@ -18,19 +18,28 @@
     // var player = null;
     var body = new Array();
     var food = null;
+    var bonus = null;
     var score = 0;
     var wall = new Array();
     var gameOver = true;
     var iBody = new Image();
     var iFood = new Image();
+    var iBonus = new Image();
     var aEat = new Audio();
     var aDie = new Audio();
     var aSong = new Audio();
+    var aBonus = new Audio();
     var lastUpdate = 0;
     var FPS = 0;
     var frames = 0;
     var acumDelta = 0;
+    localStorage.level = level;
+    var highScores = [];
+    var posHighScore = 10;
 
+
+    // var buffer = null;
+    // var bufferCtx = null;
 
 
     document.addEventListener('keydown', function (evt) {
@@ -43,6 +52,8 @@
         this.y = (y == null) ? 0 : y;
         this.width = (width == null) ? 0 : width;
         this.height = (height == null) ? this.width : height;
+    // Rectangle.prototype = {
+    //     constructor: Rectangle,
         this.intersects = function (rect) {
             if (rect == null) {
                 window.console.warn('Missing parameters on function intersects');
@@ -70,6 +81,7 @@
         //     ctx.strokeRect(this.x, this.y, this.width, this.height);
         //     }
         // }
+
     };
 
     // Add Score
@@ -150,6 +162,8 @@
             }
             ctx.textAlign = 'left';
         };
+        // Bonus
+        ctx.drawImage(iBonus, bonus.x, bonus.y);
 
 
     }
@@ -267,11 +281,26 @@
                 reset();
             }
         }
-    }
+
+        // Intersections Bonus (Bonus eat)
+        // Grow Up
+        if (body[0].intersects(bonus)) {
+            body.push(new Rectangle(body.x, body.y, 25, 25));
+            score += 1 * 500;
+            bonus.x = random(canvas.width / 20 - 1) * 20;
+            bonus.y = random(canvas.height / 20 - 1) * 20;
+            aBonus.play();
+        }
+    };
 
     function repaint() {
         window.requestAnimationFrame(repaint);
         paint(ctx);
+
+        // ctx.fillStyle = 'rgb(0, 0, 18, 0.10)';
+        // ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+
     }
 
     function run() {
@@ -308,12 +337,24 @@
         // Add Food
         food = new Rectangle(80, 80, 30, 30);
 
+        // Add Bonus
+        bonus = new Rectangle(769, 240, 30, 30);
+
         // Load assets
         iBody.src = './assets/body.png';
         iFood.src = './assets/food.png';
+        iBonus.src = './assets/bonus.png';
         aEat.src = './assets/chomp.oga';
         aDie.src = './assets/dies.oga';
         aSong.src = './assets/monkeysong.oga';
+        aBonus.src = './assets/bonus.oga';
+
+
+        // Local Storage
+        if (localStorage.level) {
+            level = localStorage.level;
+        };
+
 
 
         // Add Enemies
@@ -323,9 +364,16 @@
         wall.push(new Rectangle(800, 100, 30, 30));
         wall.push(new Rectangle(800, 200, 30, 30));
 
+        // Load buffer
+        // buffer = document.createElement('canvas');
+        // bufferCtx = buffer.getContext('2d');
+        // buffer.width = 300;
+        // buffer.height = 150;
+
+
         run();
         repaint();
-        aSong.play();
+        aSong.pause();
     }
 
     window.addEventListener('load', init, false);

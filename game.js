@@ -22,6 +22,8 @@ var wall = new Array();
 var gameOver = true;
 var iBody = new Image();
 var iFood = new Image();
+var aEat = new Audio();
+var aDie = new Audio();
 
 
 document.addEventListener('keydown', function (evt) {
@@ -210,6 +212,7 @@ function act() {
         score += 1 * 100;
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;
+        aEat.play();
     }
 
     // Intersections & Enemies(DIE)
@@ -217,6 +220,7 @@ function act() {
         if (food.intersects(wall[i])) {
             food.x = random(canvas.width / 10 - 1) * 10;
             food.y = random(canvas.height / 10 - 1) * 10;
+            aDie.play();
         }
 
         if (body[0].intersects(wall[i])) {
@@ -259,6 +263,8 @@ function init() {
     // Load assets
     iBody.src = './assets/body.png';
     iFood.src = './assets/food.png';
+    aEat.src = './assets/chomp.oga';
+    aDie.src = './assets/dies.oga';
 
 
     // Add Enemies

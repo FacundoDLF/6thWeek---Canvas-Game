@@ -239,6 +239,9 @@
             pause = !pause;
             lastPress = null;
         }
+        if (pause = true){
+            aSong.pause();
+        } else aSong.play();
 
         // Intersections & Food (EAT)
         // Grow Up

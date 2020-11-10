@@ -24,6 +24,7 @@ var iBody = new Image();
 var iFood = new Image();
 var aEat = new Audio();
 var aDie = new Audio();
+var aSong = new Audio();
 
 
 document.addEventListener('keydown', function (evt) {
@@ -76,6 +77,7 @@ function reset() {
     food.x = random(canvas.width / 10 - 1) * 10;
     food.y = random(canvas.height / 10 - 1) * 10;
     gameOver = false;
+    aSong.play();
     /* QUESTION: Why I can't define reset() as:
         function reset(
             init({..})
@@ -113,7 +115,7 @@ function paint(ctx) {
     console.log(' LastPress: ' + lastPress);
 
     // Score
-    ctx.fillText('Score: ' + score, 10, 30);
+    ctx.fillText('Score: ' + score, 30, 30);
     ctx.font = "30px New Rocker";
 
     // Pause  & Game Over
@@ -143,6 +145,7 @@ function act() {
         // GameOver Reset
         if (gameOver) {
             reset();
+
         }
 
         // Move Body
@@ -203,6 +206,7 @@ function act() {
     if (lastPress == KEY_ENTER) {
         pause = !pause;
         lastPress = null;
+        aSong.pause();
     }
 
     // Intersections & Food (EAT)
@@ -252,6 +256,7 @@ function run() {
     // window.requestAnimationFrame(run);
     setTimeout(run, 60)
     act();
+
 }
 
 function init() {
@@ -270,6 +275,7 @@ function init() {
     iFood.src = './assets/food.png';
     aEat.src = './assets/chomp.oga';
     aDie.src = './assets/dies.oga';
+    aSong.src = './assets/monkeysong.oga';
 
 
     // Add Enemies
@@ -281,6 +287,7 @@ function init() {
 
     run();
     repaint();
+    aSong.play();
 }
 
 window.addEventListener('load', init, false);
